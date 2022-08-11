@@ -1,5 +1,5 @@
-import styles from './Header.module.css';
-import joystickLogo from '../assets/joystick-logo.svg';
+import styles from './index.module.css';
+import joystickLogo from '../../assets/joystick-logo.svg';
 
 export function Header() {
     return (
