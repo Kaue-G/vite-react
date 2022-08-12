@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "author": {
+            "avatarUrl": "https://github.com/kaue-G.png",
+            "name": "santiago",
+            "role": "CTO"
+        },
+        "content": [
+            {
+                "type": "paragraph",
+                "content": "Falá mais"
+            },
+            {
+                "type": "paragraph",
+                "content": "Estou Falando muito"
+            },
+            {
+                "type": "link",
+                "content": "conversando"
+            }
+        ],
+        "publishedAt": "2022-08-11 20:00:00",
+        "comments": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            },
+            {
+                "id": 3
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "author": {
+            "avatarUrl": "https://github.com/winchesterdd.png",
+            "name": "winchester",
+            "role": "Gestor"
+        },
+        "content": [
+            {
+                "type": "paragraph",
+                "content": "trocando de profissão"
+            },
+            {
+                "type": "paragraph",
+                "content": "foi um sucesso"
+            },
+            {
+                "type": "link",
+                "content": "se aventurando"
+            }
+        ],
+        "publishedAt": "2022-06-12 20:10:00",
+        "comments": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            },
+            {
+                "id": 3
+            },
+            {
+                "id": 4
+            },
+            {
+                "id": 5
+            },
+            {
+                "id": 6
+            }
+        ]
+    }
+]
