@@ -8,6 +8,8 @@ import styles from "./index.module.css";
 export function Post({ author, publishedAt, content, comments }) {
     const [stateComments, setComments] = useState(comments);
 
+    const [newCommentText, setNewCommentText] = useState('');
+
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'as' HH:mm'h'", {
         locale: ptBR,
     });
@@ -16,13 +18,35 @@ export function Post({ author, publishedAt, content, comments }) {
         addSuffix: true
     })
 
+    const isNewCommentEmpty = newCommentText.length === 0 || newCommentText.text === '';
+
     function handleCreateNewComment() {
         event.preventDefault();
 
-        setComments([...stateComments, { id: (stateComments.length + 1) }]);
-       
+        setComments([...stateComments, newCommentText]);
+
+        setNewCommentText({
+            id: undefined,
+            text: ''
+        });
         console.log(stateComments);
+        console.log(newCommentText);
     }
+
+    function handleNewCommentChange() {
+        setNewCommentText({
+            id: (stateComments.length === 0 ? 0 : stateComments[stateComments.length - 1].id + 1),
+            text: event.target.value
+        });
+    }
+
+    function deleteComment(commentToDelete) {
+        const commentsWithoutDeletedOne = stateComments.filter(comment => {
+            return comment.text !== commentToDelete.text;
+        })
+        setComments(commentsWithoutDeletedOne);
+    }
+
     return (
         <article className={styles.post}>
             <header>
@@ -42,9 +66,9 @@ export function Post({ author, publishedAt, content, comments }) {
                 {
                     content.map(line => {
                         if (line.type === 'paragraph') {
-                            return <p>{line.content}</p>;
+                            return <p key={line.id}>{line.content}</p>;
                         } else if (line.type === 'link') {
-                            return <p><a href="#">{line.content}</a></p>;
+                            return <p key={line.id}><a href="#">{line.content}</a></p>;
                         }
                     })
                 }
@@ -52,17 +76,32 @@ export function Post({ author, publishedAt, content, comments }) {
 
             <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
                 <strong>Deixe seu feedback</strong>
-                <textarea placeholder="Deixe um comentario" />
+
+                <textarea
+                    name="comment"
+                    placeholder="Deixe um comentario"
+                    value={newCommentText.text}
+                    onChange={handleNewCommentChange}
+                    required
+                />
 
                 <footer>
-                    <button type="submit">Publicar</button>
+                    <button type="submit" disabled={isNewCommentEmpty} >
+                        Publicar
+                    </button>
                 </footer>
             </form>
 
             <div className={styles.commentList}>
                 {
                     stateComments.map(comment => {
-                        return <Comment />
+                        return (
+                            <Comment
+                                key={comment.id}
+                                content={comment}
+                                onDeleteComment={deleteComment}
+                            />
+                        );
                     })
                 }
             </div>
