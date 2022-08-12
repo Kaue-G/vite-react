@@ -1,34 +1,56 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/esm/locale/pt-BR/index.js";
+import { useState } from "react";
 import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
 import styles from "./index.module.css";
 
-export function Post(props) {
+export function Post({ author, publishedAt, content, comments }) {
+    const [stateComments, setComments] = useState(comments);
+
+    const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'as' HH:mm'h'", {
+        locale: ptBR,
+    });
+    const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+        locale: ptBR,
+        addSuffix: true
+    })
+
+    function handleCreateNewComment() {
+        event.preventDefault();
+
+        setComments([...stateComments, { id: (stateComments.length + 1) }]);
+       
+        console.log(stateComments);
+    }
     return (
         <article className={styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar src="https://github.com/kaue-G.png" />
+                    <Avatar src={author.avatarUrl} />
                     <div className={styles.authorInfo}>
-                        <strong>Santiago</strong>
-                        <span>Web Developer</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
-                <time title="12 de agosto as 09:45" dateTime="2022-08-12 09:45:12">
-                    Publicado há 1h
+                <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+                    {publishedDateRelativeToNow}
                 </time>
             </header>
 
             <div className={styles.content}>
-                <p>Tamo aqui</p>
-                <a href="#">Chega mais</a>
-                <p>
-                    <a href="#">#énois</a>{' '}
-                    <a href="#">#naluta</a>{' '}
-                    <a href="#">#valente</a>
-                </p>
+                {
+                    content.map(line => {
+                        if (line.type === 'paragraph') {
+                            return <p>{line.content}</p>;
+                        } else if (line.type === 'link') {
+                            return <p><a href="#">{line.content}</a></p>;
+                        }
+                    })
+                }
             </div>
 
-            <form className={styles.commentForm}>
+            <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
                 <strong>Deixe seu feedback</strong>
                 <textarea placeholder="Deixe um comentario" />
 
@@ -38,9 +60,11 @@ export function Post(props) {
             </form>
 
             <div className={styles.commentList}>
-                <Comment />
-                <Comment />
-                <Comment />
+                {
+                    stateComments.map(comment => {
+                        return <Comment />
+                    })
+                }
             </div>
         </article>
     );
