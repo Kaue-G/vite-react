@@ -70,7 +70,7 @@ export function Post({ author, publishedAt, content, comments }: IPostProps) {
                         if (line.type === 'paragraph') {
                             return <p key={line.id}>{line.content}</p>;
                         } else if (line.type === 'link') {
-                            return <p key={line.id}><a href="#">{line.content}</a></p>;
+                            return <p key={line.id}><a href="#">#{line.content}</a></p>;
                         }
                     })
                 }
