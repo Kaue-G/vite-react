@@ -5,6 +5,9 @@ import { Sidebar } from "./components/Sidebar";
 import './global.css';
 import styles from './App.module.css';
 
+
+import posts from './jsonExamples/posts.json'
+
 function App() {
 
   return (
@@ -13,14 +16,17 @@ function App() {
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
-          <Post
-            author="Lorem"
-            content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam eveniet dolores neque ut aliquid asperiores ad id culpa, voluptatem aspernatur ea eos sapiente, debitis tempora consequatur quo nostrum vel? Ratione."
-          />
-          <Post
-            author="Fernandes"
-            content="new post"
-          />
+          {posts.map(post => {
+            return (
+              <Post 
+                key={post.id}
+                author={post.author}
+                content={post.content}
+                publishedAt={new Date(post.publishedAt)}
+                comments={post.comments}
+              />
+            )
+          })}
         </main>
       </div>
     </>
